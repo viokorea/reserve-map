@@ -49,8 +49,8 @@ export function evaluate(position: Position, filters: Filters): Match {
   if (!filters.branch) return { type: 'direct', reason: filters.rank ? '지원가능계급에 포함됩니다. 병과도 선택해 주세요.' : '병과와 전역계급을 선택해 조건을 확인하세요.' };
   if (position.branchRaw === '전투공통') {
     return COMBAT_BRANCHES.includes(filters.branch)
-      ? { type: 'direct', reason: `${filters.branch}는 전투병과에 포함되어 전투공통 조건에 일치합니다.` }
-      : { type: 'excluded', reason: `${filters.branch}는 전투공통 대상 전투병과에 포함되지 않습니다.` };
+      ? { type: 'direct', reason: `${filters.branch} 병과 · 전투공통 조건 일치` }
+      : { type: 'excluded', reason: `${filters.branch} 병과는 전투공통 대상 전투병과에 포함되지 않습니다.` };
   }
   if (position.commonBranch) return { type: 'review', reason: `${position.branchRaw}의 허용 병과 범위는 모집부대 확인이 필요합니다.` };
   if (position.branch === filters.branch) {
