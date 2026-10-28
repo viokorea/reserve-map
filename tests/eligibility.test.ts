@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { EMPTY_FILTERS, evaluate, filtersToSearch, readFilters, RANKS, searchUnits } from '../src/eligibility.ts';
+import { BRANCHES, COMBAT_BRANCHES, EMPTY_FILTERS, evaluate, filtersToSearch, readFilters, RANKS, searchUnits } from '../src/eligibility.ts';
 import type { Filters, RecruitmentData } from '../src/types.ts';
 
 const data = JSON.parse(readFileSync(new URL('../public/data/recruitments.json',import.meta.url),'utf8')) as RecruitmentData;
@@ -26,9 +26,29 @@ test('PDF p10 유사병과는 방향과 지원자 신분을 지킴',()=>{
   assert.equal(evaluate(engineer,profile({branch:'포병',rank:'대위',similar:false})).type,'excluded');
   assert.equal(evaluate({...engineer,acceptedRanks:['하사']},profile({branch:'포병',rank:'하사',similar:true})).type,'excluded');
 });
-test('공통병과는 전 병과 허용으로 임의 해석하지 않음',()=>{
-  const common=data.positions.find(p=>p.commonBranch)!;
-  assert.equal(evaluate(common,profile({branch:'공병',rank:common.acceptedRanks[0]})).type,'review');
+test('전투공통은 전투병과 8개를 유사 지원 설정과 무관하게 직접 일치로 분류',()=>{
+  const common=data.positions.find(p=>p.branchRaw==='전투공통')!;
+  assert.equal(COMBAT_BRANCHES.length,8);
+  for (const branch of COMBAT_BRANCHES) {
+    assert(BRANCHES.includes(branch));
+    assert.equal(evaluate(common,profile({branch,rank:common.acceptedRanks[0]})).type,'direct');
+  }
+  assert.equal(readFilters('?branch=항공&rank=대위').branch,'항공');
+});
+test('전투공통에 기술·행정·특수·군수 병과를 임의 포함하지 않음',()=>{
+  const common=data.positions.find(p=>p.branchRaw==='전투공통')!;
+  for (const branch of BRANCHES.filter(branch=>!COMBAT_BRANCHES.includes(branch))) {
+    assert.equal(evaluate(common,profile({branch,rank:common.acceptedRanks[0],similar:true})).type,'excluded');
+  }
+  assert.equal(evaluate(common,profile({branch:'보병',rank:'병장'})).type,'excluded');
+});
+test('전투공통 직책이 필터 결과에 포함되고 군수공통·공통은 추가 확인으로 유지',()=>{
+  const result=searchUnits(data,profile({branch:'항공',rank:'대위'})).find(r=>r.unit.id==='division-60');
+  assert(result?.positions.some(p=>p.position.branchRaw==='전투공통' && p.position.title==='지원과장' && p.match.type==='direct'));
+  for (const label of ['군수공통','공통']) {
+    const common=data.positions.find(p=>p.branchRaw===label)!;
+    assert.equal(evaluate(common,profile({branch:'공병',rank:common.acceptedRanks[0]})).type,'review');
+  }
 });
 test('특기 미입력은 추가 확인, 일치하면 직접 일치',()=>{
   const specific=data.positions.find(p=>p.specialty==='대형차량운전')!;

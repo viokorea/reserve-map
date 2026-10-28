@@ -157,7 +157,7 @@ export default function App() {
       <div className="dialog-heading"><span className="brand-symbol"><Icon name="pin" size={24}/></span><button className="icon-button" aria-label="이용 안내 닫기" onClick={()=>help.current?.close()}><Icon name="close"/></button></div>
       <h2>지도의 기준을 알려드려요.</h2><p className="dialog-lede">공고의 지원 조건과 위치를 함께 살펴보는<br/>상비예비군 모집 탐색 도구입니다.</p>
       <div className="help-item"><Icon name="pin"/><div><h3>사단·지원단 단위의 대략 위치</h3><p>{data?.notice.locationNote}</p></div></div>
-      <div className="help-item"><Icon name="filter"/><div><h3>병과·지원가능계급으로 비교</h3><p>선발계급 대신 공고의 ‘지원가능’ 계급을 사용합니다. 연령·거주지·보류 상태·훈련 참석 조건은 별도로 확인하세요. 유사 지원은 확인된 장교 병과 및 일부 부사관 특기 규칙에 한해 표시합니다.</p></div></div>
+      <div className="help-item"><Icon name="filter"/><div><h3>병과·지원가능계급으로 비교</h3><p>선발계급 대신 공고의 ‘지원가능’ 계급을 사용합니다. 전투공통은 보병·기갑·포병·방공·정보·공병·정보통신·항공에 표시하며, 지원가능계급도 일치해야 합니다. 군수공통·공통은 추가 확인으로 분류합니다. 연령·거주지·보류 상태·훈련 참석 조건은 별도로 확인하세요. 유사 지원은 확인된 장교 병과 및 일부 부사관 특기 규칙에 한해 표시합니다.</p></div></div>
       <div className="help-item"><Icon name="layers"/><div><h3>현재 제공하는 모집 범위</h3><p>{data?.notice.scopeNote} 원문 표를 추출해 상위 부대에 연결한 항목이며, 실제 선발 인원 합계가 아닙니다.</p></div></div>
       <div className="date-notice"><Icon name="clock" size={18}/><div><strong>접수 종료일은 공식 확인이 필요해요.</strong><p>{data?.notice.dateNote} 이 지도는 현재 접수 중임을 보장하지 않습니다.</p></div></div>
       {data && <div className="dialog-links"><SourceLink data={data} page={9}>지원자격 원문</SourceLink><SourceLink data={data} page={11}>접수 일정 원문</SourceLink><a href={data.notice.applicationUrl} target="_blank" rel="noreferrer">공식 예비군 누리집<Icon name="external" size={13}/></a></div>}

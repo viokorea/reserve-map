@@ -1,7 +1,10 @@
 import type { Filters, Match, Position, RecruitmentData, UnitResult } from './types.ts';
 
 export const RANKS = ['병장', '하사', '중사', '상사', '원사', '준위', '소위', '중위', '대위', '소령', '중령'];
-export const BRANCHES = ['보병', '기갑', '포병', '방공', '정보', '공병', '정보통신', '화생방', '병기', '병참', '수송', '군사경찰', '의무', '인사행정', '군수', '의정', '정훈'];
+export const BRANCHES = ['보병', '기갑', '포병', '방공', '정보', '공병', '정보통신', '항공', '화생방', '병기', '병참', '수송', '군사경찰', '의무', '인사행정', '군수', '의정', '정훈'];
+// Army combat-branch classification: https://www.pknu.ac.kr/main/494
+// User-approved mapping for 전투공통; each role's accepted ranks still apply.
+export const COMBAT_BRANCHES = ['보병', '기갑', '포병', '방공', '정보', '공병', '정보통신', '항공'];
 export const EMPTY_FILTERS: Filters = { branch: '', rank: '', specialty: '', similar: false, query: '', kind: '', region: '' };
 
 // PDF p.10: required branch -> permitted applicant branches, in preference order.
@@ -44,6 +47,11 @@ export function evaluate(position: Position, filters: Filters): Match {
     return { type: 'review', reason: position.reviewReasons.join(' · ') };
   }
   if (!filters.branch) return { type: 'direct', reason: filters.rank ? '지원가능계급에 포함됩니다. 병과도 선택해 주세요.' : '병과와 전역계급을 선택해 조건을 확인하세요.' };
+  if (position.branchRaw === '전투공통') {
+    return COMBAT_BRANCHES.includes(filters.branch)
+      ? { type: 'direct', reason: `${filters.branch}는 전투병과에 포함되어 전투공통 조건에 일치합니다.` }
+      : { type: 'excluded', reason: `${filters.branch}는 전투공통 대상 전투병과에 포함되지 않습니다.` };
+  }
   if (position.commonBranch) return { type: 'review', reason: `${position.branchRaw}의 허용 병과 범위는 모집부대 확인이 필요합니다.` };
   if (position.branch === filters.branch) {
     if (position.specialty && position.specialty !== filters.specialty) {
