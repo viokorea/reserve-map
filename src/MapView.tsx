@@ -141,7 +141,10 @@ export default function MapView({ results, selectedId, onSelect, fitKey, onFit }
   }
 
   return <>
-    <div ref={host} className="map-canvas" aria-label="상비예비군 모집부대 지도" />
+    {/* Leaflet sets inline position:relative if it initializes before Safari has
+        applied the stylesheet. Keep the map positioned before initialization so
+        inset:0 gives it a height instead of collapsing to an empty flow box. */}
+    <div ref={host} className="map-canvas" style={{ position: 'absolute', inset: 0 }} aria-label="상비예비군 모집부대 지도" />
     <div className="map-edition"><span className="edition-dot"/><span>2027 육군</span><span className="edition-divider"/><span className="edition-subtitle">단기 상비예비군</span></div>
     <div className="map-tools">
       <button className="map-tool fit-tool" onClick={onFit} title="검색 결과 전체 보기"><Icon name="layers"/><span>전체 보기</span></button>
