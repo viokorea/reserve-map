@@ -1,0 +1,50 @@
+/* Hallmark · pre-emit critique: P5 H4 E4 S5 R5 V4
+ * genre: modern-minimal · macrostructure: Map / Diagram · theme: Cobalt
+ * Korean UI uses Noto Sans KR; Space Grotesk supplies numeric/Latin display.
+ */
+:root {
+  --color-paper: oklch(100% 0 0);
+  --color-paper-2: oklch(98% .005 255);
+  --color-paper-3: oklch(95% .009 255);
+  --color-ink: oklch(24% .026 258);
+  --color-ink-2: oklch(39% .025 258);
+  --color-muted: oklch(49% .021 258);
+  --color-faint: oklch(61% .018 258);
+  --color-rule: oklch(91% .008 255);
+  --color-rule-2: oklch(85% .013 255);
+  --color-accent: oklch(51% .20 263);
+  --color-accent-hover: oklch(45% .19 263);
+  --color-accent-ink: oklch(100% 0 0);
+  --color-accent-soft: oklch(96% .025 263);
+  --color-focus: oklch(19% .025 263);
+  --color-warning: oklch(45% .10 61);
+  --color-warning-soft: oklch(97% .025 75);
+  --color-warning-dot: oklch(64% .15 63);
+  --color-success: oklch(40% .09 165);
+  --color-error: oklch(46% .16 25);
+  --color-shadow: oklch(22% .03 260 / .09);
+  --color-shadow-strong: oklch(22% .03 260 / .16);
+  --color-map: oklch(94% .018 105);
+  --color-backdrop: oklch(22% .03 260 / .28);
+  --color-transparent: transparent;
+  --font-body: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Space Grotesk', 'Noto Sans KR', sans-serif;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-body: 14px;
+  --text-lg: 16px;
+  --text-title: 25px;
+  --radius-sm: 7px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --ease-in: cubic-bezier(.7,0,.84,0);
+  --ease-in-out: cubic-bezier(.65,0,.35,1);
+  --dur-fast: 140ms;
+  --dur-normal: 220ms;
+}
